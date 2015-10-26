@@ -18,7 +18,7 @@ class Envalo_APath_Engine {
      */
     public function extract(&$data, $path)
     {
-        $nodes =& $this->_parse($path);
+        $nodes = $this->_parse($path);
         $extracted = $this->_walk($data, $nodes);
         $results = array();
         if(is_array($extracted))
@@ -36,18 +36,27 @@ class Envalo_APath_Engine {
      * @param $data array
      * @param $path string
      * @param $values
+     * @param $append boolean An append action will add a new child instead of overwriting existing values
+     * @param $create_path boolean Should we create new elements in the array if they don't exist
      * @return bool
      */
-    public function insert(&$data, $path, $values, $create_path = true)
+    public function insert(&$data, $path, $values, $append = false, $create_path = true)
     {
-        $nodes =& $this->_parse($path);
+        $nodes = $this->_parse($path);
         $extracted = $this->_walk($data, $nodes, $create_path);
         if(is_array($extracted) && count($extracted))
         {
             /* @var $pointer Envalo_APath_Pointer */
             foreach($extracted as $pointer)
             {
-                $pointer->_pointer = $values;
+                if($append)
+                {
+                    $pointer->_pointer[] = $values;
+                }
+                else
+                {
+                    $pointer->_pointer = $values;
+                }
             }
             return true;
         }
@@ -63,7 +72,7 @@ class Envalo_APath_Engine {
      */
     public function remove(&$data, $path)
     {
-        $nodes =& $this->_parse($path);
+        $nodes = $this->_parse($path);
         $extracted = $this->_walk($data, $nodes);
         if(is_array($extracted) && count($extracted))
         {
