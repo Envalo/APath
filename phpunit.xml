@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<phpunit
+        verbose="true"
+        colors="true">
+    <testsuites>
+        <testsuite name="AllTests">
+            <directory>./tests/Envalo/APath/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

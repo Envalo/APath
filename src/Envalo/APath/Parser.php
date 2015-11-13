@@ -24,6 +24,10 @@ class Envalo_APath_Parser
     protected $_current_node = null;
     public function parse($a_path)
     {
+        if($a_path[0] == '/')
+        {
+            $a_path = substr($a_path, 1);
+        }
         if(isset(self::$_parse_cache[$a_path]))
         {
             return self::$_parse_cache[$a_path];
