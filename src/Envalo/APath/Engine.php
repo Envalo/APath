@@ -160,6 +160,26 @@ class Envalo_APath_Engine {
                 }
                 return $sub_results;
             }
+            else if($part == '*') /* This indicates we are iterating over an array of arrays, and including text-based keys */
+            {
+                $sub_nodes = array_slice($nodes, $index + 1);
+                $sub_ptr =& $current_pointer->_pointer;
+                $sub_path = $current_pointer->getPath() . '/' . $part;
+                $sub_results = array();
+                foreach($sub_ptr as $sub_index => &$sub_array)
+                {
+
+                    $sub_pointer = new Envalo_APath_Pointer($sub_array, $sub_index, $sub_path, $current_pointer);
+                    $sub_result = $this->_walk($sub_array, $sub_nodes, $create_path, $sub_pointer);
+                    if($sub_result)
+                    {
+                        $sub_results = array_merge($sub_results, $sub_result);
+                    }
+
+
+                }
+                return $sub_results;
+            }
             else if(!$current_pointer->hasChild($part) && !$create_path)
             {
                 //Return...
@@ -168,11 +188,17 @@ class Envalo_APath_Engine {
             if(!$use_current)
             {
                 $ptr =& $current_pointer->_pointer;
+                if(!is_array($ptr))
+                {
+                    // IF we are trying to walk into an array but we aren't using an array, bad things could happen.
+                    return null;
+                }
                 if(!isset($ptr[$part]) && $create_path)
                 {
                     $ptr[$part] = array();
 
-                }$ptr =& $ptr[$part];
+                }
+                $ptr =& $ptr[$part];
                 $new_path = $current_pointer->getPath() . '/' . $part;
                 $current_pointer = new Envalo_APath_Pointer($ptr, $part, $new_path, $current_pointer);
             }
