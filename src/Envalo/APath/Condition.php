@@ -39,6 +39,10 @@ class Envalo_APath_Condition
             case '>':
                 return $value > $arg;
                 break;
+            case '=~':
+                return strpos($value, $arg) !== false;
+            case '!~':
+                return strpos($value, $arg) === false;
             default: return false;
         }
     }
