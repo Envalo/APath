@@ -6,6 +6,10 @@ class DataSources
     {
         return new Envalo_APath_Engine();
     }
+    public static function getParser()
+    {
+        return new Envalo_APath_Parser();
+    }
     public static function getNode()
     {
         return new Envalo_APath_Node();

@@ -24,6 +24,10 @@ class Envalo_APath_Parser
     protected $_current_node = null;
     public function parse($a_path)
     {
+        if($this->_alreadyParsed($a_path))
+        {
+            return $a_path;
+        }
         if($a_path[0] == '/')
         {
             $a_path = substr($a_path, 1);
@@ -95,5 +99,25 @@ class Envalo_APath_Parser
     {
         $this->_filters[] = $matches[1];
         return '$$$' . (count($this->_filters) - 1) . '%%%';
+    }
+
+    /**
+     * @param $a_path string|array
+     * @return bool
+     */
+    protected function _alreadyParsed($a_path)
+    {
+        if(is_array($a_path))
+        {
+            foreach($a_path as $node)
+            {
+                if(!($node instanceof Envalo_APath_Node))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
