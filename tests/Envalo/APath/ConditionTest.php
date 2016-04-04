@@ -12,6 +12,10 @@ class Envalo_APath_ConditionTest extends PHPUnit_Framework_TestCase
         $data = DataSources::getOrderData();
         $results = $engine->extract($data, '/order/items/#/.[sku=~KU1]');
         $this->_testItemResults($results, 1);
+        $results = $engine->extract($data, '/order/items/#/.[sku=@"SKUYYY,SKU1,SKU2,SKUXXX"]');
+        $this->_testItemResults($results, 2);
+        $results = $engine->extract($data, '/order/items/#/.[sku!@"SKUYYY,SKU1,SKU2,SKU3"]');
+        $this->_testItemResults($results, 1);
         $results = $engine->extract($data, '/order/items/#/.[sku=~SKU]');
         $this->_testItemResults($results, 4);
         $results = $engine->extract($data, '/order/items/#/.[sku!~KU1]');

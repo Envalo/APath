@@ -42,7 +42,7 @@ class Envalo_APath_Parser
         $result = array();
         $extract_filter_regex = '/\[([^\]]+)\]/';
         $process_filter_regex = '/\$\$\$(\d+)\%\%\%/';
-        $process_condition_regex = '/^(.+)(==|!=|<=|>=|<(?!=)|>(?!=)|=~|!~)(.+)$/';
+        $process_condition_regex = '/^(.+)(==|!=|<=|>=|<(?!=)|>(?!=)|=~|!~|=@|!@)(.+)$/';
         $a_path_cleaned = preg_replace_callback($extract_filter_regex, array($this, '_extractFilters'), $a_path);
         $parts = explode('/', $a_path_cleaned);
 

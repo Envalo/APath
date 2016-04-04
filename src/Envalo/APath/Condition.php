@@ -43,6 +43,10 @@ class Envalo_APath_Condition
                 return strpos($value, $arg) !== false;
             case '!~':
                 return strpos($value, $arg) === false;
+            case '=@':
+                return in_array($value, explode(',', $arg));
+            case '!@':
+                return !in_array($value, explode(',', $arg));
             default: return false;
         }
     }
